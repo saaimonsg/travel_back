@@ -37,7 +37,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/login", "/", "/logout").permitAll()
                         .requestMatchers("/v3/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
-                        .requestMatchers("/app/**").permitAll()
+                        .requestMatchers("/app/**").authenticated()
                         .anyRequest().authenticated())
                 .httpBasic(configurer -> {
                     configurer.authenticationEntryPoint(basicAuthenticationEntryPoint());
