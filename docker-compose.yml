@@ -1,0 +1,34 @@
+version: '3.1'
+services:
+  #https://hub.docker.com/_/mysql
+  app_db:
+    image: mysql:8.0
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d:Z,ro
+#      - ./database/db:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "--password=mysql" ]
+      timeout: 10s
+      retries: 10
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: db_default
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+  app:
+    image: openjdk:17
+    volumes:
+      - ./build/libs/:/data
+    ports:
+      - "8080:8080"
+    command: bash -c "cd /data && java -jar Travelling-0.0.1-SNAPSHOT.jar"
+    depends_on:
+      app_db:
+        condition: service_healthy
+    environment:
+      - MYSQL_HOST= app_db
+      - MYSQL_PORT= 3306
