@@ -63,10 +63,11 @@ public class AuthenticationApiController {
                 permissions, new String(base64EncodedAuthenticationKey, StandardCharsets.UTF_8));
         if (authenticated.isAuthenticated()) {
             //FIXME
-            SecurityContextHolder.getContext().setAuthentication(authenticated);
+            if(SecurityContextHolder.getContext().getAuthentication().equals(authenticated)){
+                log.info("User already Authenticated");
+            };
             return gson.toJson(userAuthenticatedData);
         }
         return gson.toJson(new UserAuthenticatedData());
-
     }
 }

@@ -28,10 +28,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        AppUser user = this.repository.findAppUserByName(username);
+
+        if(this.repository.findByUsername(username) == null){
+            throw new UsernameNotFoundException("usernamenotfound");
+        }
+        AppUser user = this.repository.findByUsername(username);
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+user.getRole().getName()));
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
 
         return new CustomUserDetails(user.getUsername(),user.getPassword(),grantedAuthorities);
     }
