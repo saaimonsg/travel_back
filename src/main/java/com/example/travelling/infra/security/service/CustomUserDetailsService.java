@@ -31,7 +31,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         AppUser user = this.repository.findAppUserByName(username);
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+user.getRole().getName()));
+        user.getRole().forEach(role -> {
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName().toUpperCase()));
+        });
+
 
         return new CustomUserDetails(user.getUsername(),user.getPassword(),grantedAuthorities);
     }

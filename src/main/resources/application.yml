@@ -14,24 +14,24 @@ spring:
     password: "${MYSQL_PASSWORD:root}"
 
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
-      ddl-auto: none
-      generate-ddl: true
+      ddl-auto: update
+      generate-ddl: false
     properties:
-      show-sql: true
+      show-sql: false
       hibernate:
-        format_sql: true
-        show_sql: true
+        format_sql: false
+        show_sql: false
     database-platform: org.hibernate.dialect.MySQLDialect
     database: mysql
   flyway:
-    enabled: true
+    enabled: false
     url: "jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:db_default}"
     user: "${MYSQL_USERNAME:mysql}"
     password: "${MYSQL_PASSWORD:root}"
 
-#logging:
-#  level:
-#    web: debug
-#    root: debug
+logging:
+  level:
+    web: debug
+    root: debug

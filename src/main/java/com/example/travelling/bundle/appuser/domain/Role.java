@@ -4,6 +4,7 @@ import com.example.travelling.bundle.appuser.data.RoleData;
 import com.example.travelling.infra.core.domain.AbstractPersistableCustom;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.*;
         name = "unq_name") })
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class Role extends AbstractPersistableCustom implements Serializable {
 
     @Column(name = "name", unique = true, nullable = false, length = 100)
@@ -25,16 +27,11 @@ public class Role extends AbstractPersistableCustom implements Serializable {
     @Column(name = "is_disabled", nullable = false)
     private Boolean disabled;
 
-    protected Role() {
 
+    public Role(String name, String description, Boolean disabled) {
+        this.name = name;
+        this.description = description;
+        this.disabled = disabled;
     }
-
-    public Role(final String name, final String description) {
-        this.name = name.trim();
-        this.description = description.trim();
-        this.disabled = false;
-    }
-
-
 }
 

@@ -4,6 +4,7 @@ import com.example.travelling.bundle.appuser.domain.AppUser;
 import com.example.travelling.bundle.appuser.domain.Role;
 import lombok.*;
 
+import java.util.Collection;
 import java.util.Set;
 
 @Data
@@ -15,7 +16,7 @@ public class AppUserData {
     private String surname;
     private String email;
     private boolean isDriver;
-    private Role role;
+    private Collection<Role> role;
 
 
     public AppUserData(AppUser user) {

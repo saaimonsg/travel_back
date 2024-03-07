@@ -53,14 +53,18 @@ public class AuthenticationApiController {
         Authentication authenticationRequest = UsernamePasswordAuthenticationToken.unauthenticated(request.getUsername(), request.getPassword());
         Authentication authenticated = this.authenticationManager.authenticate(authenticationRequest);
 
-        final Collection<GrantedAuthority> permissions = new ArrayList<>();
         AppUser user = userRepository.findByUsername(request.getUsername());
-        permissions.add(new SimpleGrantedAuthority("ROLE_"+user.getRole().getName()));
+
+        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        user.getRole().forEach(role -> {
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName().toUpperCase()));
+        });
+
         final byte[] base64EncodedAuthenticationKey = Base64.getEncoder()
                 .encode((request.getUsername() + ":" + request.getPassword()).getBytes(StandardCharsets.UTF_8));
 
         UserAuthenticatedData userAuthenticatedData = new UserAuthenticatedData(request.getUsername(),
-                permissions, new String(base64EncodedAuthenticationKey, StandardCharsets.UTF_8));
+                grantedAuthorities, new String(base64EncodedAuthenticationKey, StandardCharsets.UTF_8));
         if (authenticated.isAuthenticated()) {
             //FIXME
             SecurityContextHolder.getContext().setAuthentication(authenticated);

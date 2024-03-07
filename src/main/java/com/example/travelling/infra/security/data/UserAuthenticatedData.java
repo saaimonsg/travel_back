@@ -13,6 +13,6 @@ import java.util.Collection;
 @NoArgsConstructor
 public class UserAuthenticatedData {
     private String username;
-    private Collection<GrantedAuthority> permissions;
+    private Collection<GrantedAuthority> roles;
     private String base64EncodedAuthenticationKey;
 }

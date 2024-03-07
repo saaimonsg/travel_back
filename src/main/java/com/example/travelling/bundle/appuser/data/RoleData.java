@@ -1,5 +1,6 @@
 package com.example.travelling.bundle.appuser.data;
 
+import com.example.travelling.bundle.appuser.domain.Role;
 import lombok.Data;
 
 import java.util.Collection;
@@ -19,5 +20,7 @@ public class RoleData {
     }
 
 
-
+    public Role toRole() {
+        return new Role(this.name,this.description,this.disabled);
+    }
 }

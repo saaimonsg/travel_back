@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -35,14 +36,14 @@ public class AppUser  {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "app_appuser_role", joinColumns = @JoinColumn(name = "appuser_id"), inverseJoinColumns
             = @JoinColumn(name = "role_id"))
-    private Role role;
+    private Collection<Role> role;
 
 
     public AppUser(String name, String surname, String email, String username, String password,
-                   Role role) {
+                   Collection<Role> role) {
         this.name = name;
         this.surname = surname;
         this.email = email;

@@ -1,37 +1,54 @@
 package com.example.travelling.bundle.appuser.controller;
 
 import com.example.travelling.bundle.appuser.data.RoleData;
-import com.example.travelling.bundle.appuser.data.RoleJpaRepository;
+import com.example.travelling.bundle.appuser.service.RoleService;
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/roles")
+@RequestMapping("/roles")
 public class AppRoleRestController {
 
-    private final RoleJpaRepository repository;
+
+    private final RoleService roleService;
     private Gson gson;
 
-    public AppRoleRestController(RoleJpaRepository repository) {
-        this.repository = repository;
+    @Autowired
+    public AppRoleRestController(RoleService roleService) {
+        this.roleService = roleService;
         gson = new Gson();
     }
 
-    @GetMapping
-    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getAll() {
-        return gson.toJson(repository.findAll());
+    @RequestMapping(value= "",method = RequestMethod.GET,
+            consumes = MediaType.ALL_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String get(@RequestParam(value = "roleId", required = false) Long roleId) {
+        if (roleId != null) {
+            return gson.toJson(roleService.findById(roleId));
+        } else {
+            return gson.toJson(roleService.findAll());
+        }
     }
 
-    @GetMapping
-    @RequestMapping(value = "/create",consumes = MediaType.APPLICATION_JSON_VALUE, produces =
-            MediaType.APPLICATION_JSON_VALUE)
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     public String createRole(@RequestBody RoleData roleData) {
-        return gson.toJson(repository.findAll());
+        return gson.toJson(roleService.save(roleData));
     }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String editRole(@RequestBody RoleData roleData) {
+        return gson.toJson(roleService.edit(roleData));
+    }
+
 
 }
