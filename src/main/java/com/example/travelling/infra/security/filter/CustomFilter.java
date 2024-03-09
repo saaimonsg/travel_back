@@ -88,7 +88,8 @@ public class CustomFilter extends BasicAuthenticationFilter {
         } catch (AuthenticationException ex) {
             //FIXME TRAV-1
             LOG.error("Authentication failed", ex);
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), gson.toJson(new UserAuthenticatedData()) );
+            response.sendError(HttpStatus.UNAUTHORIZED.value(),
+                    gson.toJson(new UserAuthenticatedData(null,null)) );
             return;
         } catch (IOException ex) {
             LOG.error("Failed to decode basic authentication token", ex);

@@ -1,7 +1,7 @@
 package com.example.travelling.infra.security.service;
 
-import com.example.travelling.bundle.appuser.data.AppUserJpaRepository;
-import com.example.travelling.bundle.appuser.domain.AppUser;
+import com.example.travelling.infra.core.domain.appuser.data.AppUserJpaRepository;
+import com.example.travelling.infra.core.domain.appuser.domain.AppUser;
 import com.example.travelling.infra.security.data.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 @Service(value = "customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
@@ -31,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         AppUser user = this.repository.findAppUserByName(username);
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        user.getRole().forEach(role -> {
+        user.getRoles().forEach(role -> {
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName().toUpperCase()));
         });
 

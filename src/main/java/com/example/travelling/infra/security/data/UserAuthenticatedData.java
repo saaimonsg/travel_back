@@ -9,10 +9,12 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserAuthenticatedData {
     private String username;
-    private Collection<GrantedAuthority> roles;
     private String base64EncodedAuthenticationKey;
+
+    public UserAuthenticatedData(String username, String base64EncodedAuthenticationKey) {
+        this.username = username;
+        this.base64EncodedAuthenticationKey = base64EncodedAuthenticationKey;
+    }
 }

@@ -12,7 +12,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: "${MYSQL_USERNAME:mysql}"
     password: "${MYSQL_PASSWORD:root}"
-
+    hikari:
+      password: "${MYSQL_PASSWORD:root}"
+      username: "${MYSQL_USERNAME:mysql}"
+      jdbc-url: "jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:db_default}"
+      driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: false
     hibernate:

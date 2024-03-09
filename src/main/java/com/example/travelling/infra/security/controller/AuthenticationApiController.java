@@ -1,8 +1,7 @@
 package com.example.travelling.infra.security.controller;
 
-import com.example.travelling.bundle.appuser.data.AppUserJpaRepository;
-import com.example.travelling.bundle.appuser.domain.AppUser;
-import com.example.travelling.bundle.appuser.domain.Role;
+import com.example.travelling.infra.core.domain.appuser.data.AppUserJpaRepository;
+import com.example.travelling.infra.core.domain.appuser.domain.AppUser;
 import com.example.travelling.infra.security.data.UserAuthenticatedData;
 import com.example.travelling.infra.security.data.UserAuthenticationData;
 import com.google.gson.Gson;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.print.attribute.standard.Media;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -56,21 +54,20 @@ public class AuthenticationApiController {
         AppUser user = userRepository.findByUsername(request.getUsername());
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        user.getRole().forEach(role -> {
+        user.getRoles().forEach(role -> {
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName().toUpperCase()));
         });
 
         final byte[] base64EncodedAuthenticationKey = Base64.getEncoder()
                 .encode((request.getUsername() + ":" + request.getPassword()).getBytes(StandardCharsets.UTF_8));
 
-        UserAuthenticatedData userAuthenticatedData = new UserAuthenticatedData(request.getUsername(),
-                grantedAuthorities, new String(base64EncodedAuthenticationKey, StandardCharsets.UTF_8));
+        UserAuthenticatedData userAuthenticatedData = new UserAuthenticatedData(request.getUsername(), new String(base64EncodedAuthenticationKey, StandardCharsets.UTF_8));
         if (authenticated.isAuthenticated()) {
             //FIXME
             SecurityContextHolder.getContext().setAuthentication(authenticated);
             return gson.toJson(userAuthenticatedData);
         }
-        return gson.toJson(new UserAuthenticatedData());
+        return gson.toJson(new UserAuthenticatedData(null,null));
 
     }
 }
