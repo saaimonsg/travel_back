@@ -10,4 +10,8 @@ public interface CountryService {
     List<Country> findAll();
 
     Country findById(Long toCountryId);
+
+    Country save(Country country);
+
+    Country delete(Long countryId);
 }

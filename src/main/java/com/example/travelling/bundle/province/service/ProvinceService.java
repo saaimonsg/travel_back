@@ -11,4 +11,10 @@ public interface ProvinceService {
     List<Province> findAllByCountryId(Long countryId);
 
     Province findById(Long toProvinceId);
+
+    List<Province> findAll();
+
+    Province create(Province province);
+
+    Province remove(Long cityId);
 }

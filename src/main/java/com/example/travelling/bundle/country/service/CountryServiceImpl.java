@@ -22,4 +22,17 @@ public class CountryServiceImpl implements CountryService {
     public Country findById(Long countryId) {
         return repository.findById(countryId).orElseThrow();
     }
+
+    @Override
+    public Country save(Country country) {
+        return repository.save(country);
+    }
+
+    @Override
+    public Country delete(Long countryId) {
+        return repository.findById(countryId).map(country -> {
+            repository.delete(country);
+            return country;
+        }).orElseThrow();
+    }
 }

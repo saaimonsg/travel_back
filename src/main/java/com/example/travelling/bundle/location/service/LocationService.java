@@ -19,7 +19,9 @@ public interface LocationService {
     void create(LocationData locationData, AppUser user);
 
 
-    Location findLocationByIdAndAppUser(Long locationId) throws UnAuthenticatedUserException, AppUserExceptionError;
+    LocationData findLocationByIdAndAppUser(Long locationId) throws UnAuthenticatedUserException, AppUserExceptionError;
 
     List<Location> findLocationsByIdAndAppUser() throws UnAuthenticatedUserException, AppUserExceptionError;
+
+    void removeLocationById(Long locationId) throws UnAuthenticatedUserException, AppUserExceptionError;
 }

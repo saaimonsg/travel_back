@@ -12,7 +12,6 @@ import com.example.travelling.bundle.province.service.ProvinceService;
 import com.example.travelling.infra.core.domain.appuser.domain.AppUser;
 import com.example.travelling.infra.core.domain.appuser.exception.AppUserExceptionError;
 import com.example.travelling.infra.core.domain.appuser.service.AppUserService;
-import com.example.travelling.infra.core.domain.appuser.service.AppUserServiceImpl;
 import com.example.travelling.infra.security.exception.UnAuthenticatedUserException;
 import com.example.travelling.infra.security.service.PlatformSecurityContext;
 import lombok.RequiredArgsConstructor;
@@ -68,11 +67,12 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Location findLocationByIdAndAppUser(Long locationId) throws UnAuthenticatedUserException, AppUserExceptionError {
+    public LocationData findLocationByIdAndAppUser(Long locationId) throws UnAuthenticatedUserException,
+            AppUserExceptionError {
         AppUser appUser =
                 appUserService.getByUsername(this.platformSecurityContext.authenticatedUser().getUsername());
         Location location = repository.findLocationByIdAndAppUser_Id(locationId, appUser.getId());
-        return location;
+        return new LocationData(location, appUser);
     }
 
     @Override
@@ -80,6 +80,15 @@ public class LocationServiceImpl implements LocationService {
         AppUser appUser =
                 appUserService.getByUsername(this.platformSecurityContext.authenticatedUser().getUsername());
         return repository.findLocationsByAppUser_Id(appUser.getId());
+    }
+
+    @Override
+    public void removeLocationById(Long locationId) throws UnAuthenticatedUserException, AppUserExceptionError {
+        AppUser appUser =
+                appUserService.getByUsername(this.platformSecurityContext.authenticatedUser().getUsername());
+        Location loc = repository.findLocationByIdAndAppUser_Id(locationId, appUser.getId());
+
+        repository.delete(loc);
     }
 
 }

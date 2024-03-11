@@ -1,9 +1,7 @@
 package com.example.travelling.bundle.location.controller;
 
-import com.example.travelling.bundle.location.data.LocationJdbcTemplate;
 import com.example.travelling.bundle.location.service.LocationService;
 import com.example.travelling.bundle.location.data.LocationData;
-import com.example.travelling.infra.core.domain.appuser.domain.AppUser;
 import com.example.travelling.infra.core.domain.appuser.exception.AppUserExceptionError;
 import com.example.travelling.infra.core.domain.appuser.service.AppUserServiceImpl;
 import com.example.travelling.infra.security.exception.UnAuthenticatedUserException;
@@ -23,7 +21,6 @@ public class LocationRestController {
 
     private final LocationService locationService;
     private final AppUserServiceImpl appUserService;
-    private final LocationJdbcTemplate jdbcTemplate;
     private final Gson gson = new Gson();
 
 
@@ -46,7 +43,7 @@ public class LocationRestController {
     @RequestMapping(value = "/create", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody //TODO migrate this to their current controllers country, province and city
+    @ResponseBody
     public String createLocation(@RequestBody String body) throws UnAuthenticatedUserException, AppUserExceptionError {
 
         LocationData locationData = gson.fromJson(body, LocationData.class);
@@ -58,7 +55,7 @@ public class LocationRestController {
     @RequestMapping(value = "/get", method = RequestMethod.GET,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody //TODO migrate this to their current controllers country, province and city
+    @ResponseBody
     public String getLocation(@RequestParam(name = "locationId") Long locationId) throws UnAuthenticatedUserException, AppUserExceptionError {
 
         return gson.toJson(locationService.findLocationByIdAndAppUser(locationId));
@@ -67,17 +64,26 @@ public class LocationRestController {
     @RequestMapping(value = "/getAll", method = RequestMethod.GET,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody //TODO migrate this to their current controllers country, province and city
+    @ResponseBody
     public String getLocations() throws UnAuthenticatedUserException, AppUserExceptionError {
         return gson.toJson(locationService.findLocationsByIdAndAppUser());
     }
     @RequestMapping(value = "/edit", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody //TODO migrate this to their current controllers country, province and city
+    @ResponseBody
     public String editLocation(@RequestParam(name = "locationId") Long locationId) throws UnAuthenticatedUserException, AppUserExceptionError {
 
         return gson.toJson(locationService.findLocationByIdAndAppUser(locationId));
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String deleteLocation(@RequestParam(name = "locationId",value = "locationId") Long locationId) throws UnAuthenticatedUserException, AppUserExceptionError {
+        locationService.removeLocationById(locationId);
+        return gson.toJson("location.delete.successful");
     }
 
 }

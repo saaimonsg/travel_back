@@ -14,6 +14,7 @@ public class CityServiceImpl implements CityService {
 
     private final CityJpaRepository repository;
     private final ProvinceJpaRepository provinceJpaRepository;
+
     @Override
     public List<City> findAllByProvinceId(Long provinceId) {
         provinceJpaRepository.findById(provinceId).orElseThrow();
@@ -23,5 +24,23 @@ public class CityServiceImpl implements CityService {
     @Override
     public City findById(Long cityID) {
         return repository.findById(cityID).orElseThrow();
+    }
+
+    @Override
+    public List<City> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public City create(City cityData) {
+        return repository.save(cityData);
+    }
+
+    @Override
+    public City remove(Long cityId) {
+        return repository.findById(cityId).map(city -> {
+            repository.delete(city);
+            return city;
+        }).orElseThrow();
     }
 }

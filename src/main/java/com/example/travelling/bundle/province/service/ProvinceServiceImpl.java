@@ -25,4 +25,22 @@ public class ProvinceServiceImpl implements ProvinceService {
     public Province findById(Long provinceId) {
         return repository.findById(provinceId).orElseThrow();
     }
+
+    @Override
+    public List<Province> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public Province create(Province province) {
+        return repository.save(province);
+    }
+
+    @Override
+    public Province remove(Long provinceId) {
+        return repository.findById(provinceId).map(province -> {
+            repository.delete(province);
+            return province;
+        }).orElseThrow();
+    }
 }
