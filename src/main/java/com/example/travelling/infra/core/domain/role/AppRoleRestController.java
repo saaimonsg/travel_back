@@ -1,8 +1,5 @@
-package com.example.travelling.infra.core.domain.appuser.controller;
+package com.example.travelling.infra.core.domain.role;
 
-import com.example.travelling.infra.core.domain.appuser.data.RoleData;
-import com.example.travelling.infra.core.domain.appuser.exception.RoleExceptionError;
-import com.example.travelling.infra.core.domain.appuser.service.RoleService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,7 +32,7 @@ public class AppRoleRestController {
     }
 
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST,
+    @RequestMapping(value = "/save", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

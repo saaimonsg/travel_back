@@ -1,8 +1,5 @@
-package com.example.travelling.infra.core.domain.appuser.service;
+package com.example.travelling.infra.core.domain.role;
 
-import com.example.travelling.infra.core.domain.appuser.data.RoleData;
-import com.example.travelling.infra.core.domain.appuser.data.RoleJpaRepository;
-import com.example.travelling.infra.core.domain.appuser.domain.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

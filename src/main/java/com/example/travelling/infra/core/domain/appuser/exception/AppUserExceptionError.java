@@ -4,4 +4,8 @@ public class AppUserExceptionError extends Exception {
     public AppUserExceptionError(String message) {
         super(message);
     }
+
+    public AppUserExceptionError(String amountPassengers, String amountPassengersIsRequired) {
+        super(amountPassengers + " " + amountPassengersIsRequired);
+    }
 }

@@ -1,11 +1,12 @@
 package com.example.travelling.infra.security.config;
 
+import com.example.travelling.infra.core.domain.role.RoleJpaRepository;
 import com.example.travelling.infra.security.filter.CustomFilter;
 import com.example.travelling.infra.security.filter.ResponseCorsFilter;
 import com.example.travelling.infra.security.service.CustomUserDetailsService;
 import com.example.travelling.infra.core.domain.appuser.data.AppUserJpaRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,19 +30,27 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @EnableWebSecurity
 @EnableWebMvc
 @Slf4j
-@RequiredArgsConstructor
 public class SecurityConfig implements WebMvcConfigurer {
 
     private final AppUserJpaRepository appUserJpaRepository;
     private final CustomUserDetailsService userDetailsService;
+    private final RoleJpaRepository roleJpaRepository;
+
+    @Autowired
+    public SecurityConfig(AppUserJpaRepository appUserJpaRepository, CustomUserDetailsService userDetailsService, RoleJpaRepository roleJpaRepository) {
+        this.appUserJpaRepository = appUserJpaRepository;
+        this.userDetailsService = userDetailsService;
+        this.roleJpaRepository = roleJpaRepository;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login", "/logout").permitAll()
-                        .requestMatchers("/api/logout", "/api/authenticate").permitAll()
-                        .requestMatchers("/api/swagger-ui.html", "/api/swagger-ui/**", "/api/v3/**").permitAll()
-                        .anyRequest().authenticated())
+        return http
+                .addFilterBefore(new CustomFilter(authenticationManager(), basicAuthenticationEntryPoint(),
+                                appUserJpaRepository, passwordEncoder(), roleJpaRepository),
+                        BasicAuthenticationFilter.class)
+                .authorizeHttpRequests((requests) -> requests.anyRequest().authenticated()
+                )
                 .httpBasic(httpSecurityHttpBasicConfigurer -> {
                     httpSecurityHttpBasicConfigurer.authenticationEntryPoint(basicAuthenticationEntryPoint());
                 })
@@ -49,35 +58,12 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .cors(configurer -> {
                     configurer.configurationSource(ResponseCorsFilter.corsConfigurationSource);
                 })
-//                .logout(configurer -> {
-//                    configurer.logoutUrl("/api/logout")
-//                            .logoutSuccessUrl("/")
-//                            .deleteCookies("JSESSIONID");
-//                })
                 .userDetailsService(userDetailsService)
                 .authenticationProvider(authenticationProvider())
                 .authenticationManager(authenticationManager())
-                .addFilterBefore(new CustomFilter(authenticationManager(), basicAuthenticationEntryPoint()),
-                        BasicAuthenticationFilter.class)
                 .build();
-
-//                .formLogin(configurer -> {
-//                    configurer.loginPage("/login")
-//                            .usernameParameter("username")
-//                            .passwordParameter("password")
-//                            .successHandler(authenticationSuccessHandler());
-//                })
-
-
     }
 
-//    private TenantAwareBasicAuthenticationFilter tenantAwareBasicAuthenticationFilter() {
-//        TenantAwareBasicAuthenticationFilter filter =
-//                new TenantAwareBasicAuthenticationFilter(authenticationManager(),
-//                basicAuthenticationEntryPoint());
-//        filter.setRequestMatcher(antMatcher("/app/**"));
-//        return filter;
-//    }
 
     @Bean
     public BasicAuthenticationEntryPoint basicAuthenticationEntryPoint() {

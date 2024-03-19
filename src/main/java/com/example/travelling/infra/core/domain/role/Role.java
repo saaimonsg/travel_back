@@ -1,6 +1,7 @@
-package com.example.travelling.infra.core.domain.appuser.domain;
+package com.example.travelling.infra.core.domain.role;
 
-import com.example.travelling.infra.core.domain.AbstractPersistableCustom;
+import com.example.travelling.infra.core.domain.permission.Permission;
+import com.example.travelling.infra.core.jpa.AbstractPersistableCustom;
 import jakarta.persistence.*;
 import lombok.*;
 

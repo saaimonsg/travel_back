@@ -1,4 +1,4 @@
-package com.example.travelling.infra.core.domain;
+package com.example.travelling.infra.core.jpa;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

@@ -1,4 +1,4 @@
-package com.example.travelling.infra.core.domain.appuser.exception;
+package com.example.travelling.infra.core.domain.role;
 
 public class RoleExceptionError extends Throwable {
     public RoleExceptionError(String message) {

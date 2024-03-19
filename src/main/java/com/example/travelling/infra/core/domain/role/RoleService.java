@@ -1,7 +1,4 @@
-package com.example.travelling.infra.core.domain.appuser.service;
-
-import com.example.travelling.infra.core.domain.appuser.data.RoleData;
-import com.example.travelling.infra.core.domain.appuser.domain.Role;
+package com.example.travelling.infra.core.domain.role;
 
 import java.util.Collection;
 

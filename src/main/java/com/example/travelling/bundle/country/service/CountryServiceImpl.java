@@ -25,6 +25,13 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Country save(Country country) {
+        if(country.getIso() == null || country.getIso().isEmpty()) {
+            throw new IllegalArgumentException("Country ISO is required");
+        }else if (country.getName() == null || country.getName().isEmpty()) {
+            throw new IllegalArgumentException("Country name is required");
+        }else if (country.getNiceName() == null || country.getNiceName().isEmpty()){
+            throw new IllegalArgumentException("Country name is required");
+        }
         return repository.save(country);
     }
 

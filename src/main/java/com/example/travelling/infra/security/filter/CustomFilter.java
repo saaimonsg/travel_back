@@ -1,34 +1,43 @@
 package com.example.travelling.infra.security.filter;
 
+import com.example.travelling.infra.core.domain.appuser.data.AppUserJpaRepository;
+import com.example.travelling.infra.core.domain.role.RoleJpaRepository;
+import com.example.travelling.infra.core.domain.appuser.domain.AppUser;
+import com.example.travelling.infra.core.domain.role.Role;
 import com.example.travelling.infra.security.data.UserAuthenticatedData;
 import com.google.gson.Gson;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
 
 /**
  * To implement a custom basic authentication filter in your CustomFilter.java class,
  * you need to override the doFilterInternal method of the BasicAuthenticationFilter class.
  * This method is called for every request that passes through the filter chain.
  * Here, you can add your custom authentication logic.
- *
+ * <p>
  * * Here's a step-by-step plan:
  * 1). Override the doFilterInternal method.
  * 2). Extract the Authorization header from the request.
@@ -41,30 +50,34 @@ import java.util.Base64;
  * 8). Authenticate the UsernamePasswordAuthenticationToken using the AuthenticationManager.
  * 9). If the authentication is successful, set the authentication in the SecurityContextHolder.
  * 10). Continue the filter chain.
- *
+ * <p>
  * Here's how you can implement this in your CustomFilter.java class:
  */
 @Service
+@Slf4j
 public class CustomFilter extends BasicAuthenticationFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomFilter.class);
+    private final Gson gson = new Gson();
+
+    private final AppUserJpaRepository appUserJpaRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleJpaRepository roleJpaRepository;
 
 
-    private final String tenantRequestHeader = "Travelling-Id";
-    private static boolean firstRequestProcessed = false;
-    private final boolean exceptionIfHeaderMissing = true;
-    private final Gson gson ;
-
-    @Autowired
     public CustomFilter(final AuthenticationManager authenticationManager,
-                        final AuthenticationEntryPoint authenticationEntryPoint) {
+                        final AuthenticationEntryPoint authenticationEntryPoint,
+                        AppUserJpaRepository appUserJpaRepository,
+                        PasswordEncoder passwordEncoder,
+                        RoleJpaRepository roleJpaRepository) {
         super(authenticationManager, authenticationEntryPoint);
-        gson = new Gson();
+        this.appUserJpaRepository = appUserJpaRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleJpaRepository = roleJpaRepository;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String header = request.getHeader("Authorization");
 
         if (StringUtils.isEmpty(header) || !header.startsWith("Basic ")) {
@@ -81,6 +94,26 @@ public class CustomFilter extends BasicAuthenticationFilter {
 
             if (super.getAuthenticationManager() != null) {
                 UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
+                if (appUserJpaRepository.findByUsername(username) == null && request.getServletPath().equals("/authenticate/register")) {
+                    AppUser appUser = new AppUser();
+                    appUser.setUsername(username);
+                    appUser.setPassword(passwordEncoder.encode(password));
+                    Role roleUser = roleJpaRepository.findByName("ROLE_USER");
+                    appUser.getRoles().add(roleUser);
+                    appUserJpaRepository.save(appUser);
+                    Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+                    grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+                    authRequest = new UsernamePasswordAuthenticationToken(username, password, grantedAuthorities);
+                }
+                log.debug("authRequest: {}", authRequest);
+                log.debug("authRequest -> getPrincipal: {}", authRequest.getPrincipal());
+                log.debug("authRequest -> getDetails: {}", authRequest.getDetails());
+                log.debug("authRequest -> getAuthorities: {}", authRequest.getAuthorities());
+                log.debug("authRequest -> isAuthenticated: {}", authRequest.isAuthenticated());
+                log.debug("request-> getPathInfo: {}", request.getPathInfo());
+                log.debug("request-> getRequestURI: {}", request.getRequestURI());
+                log.debug("request-> getRequestURL: {}", request.getRequestURL());
+                log.debug("request-> getServletPath: {}", request.getServletPath());
                 Authentication authResult = super.getAuthenticationManager().authenticate(authRequest);
                 SecurityContextHolder.getContext().setAuthentication(authResult);
             }
@@ -88,8 +121,8 @@ public class CustomFilter extends BasicAuthenticationFilter {
         } catch (AuthenticationException ex) {
             //FIXME TRAV-1
             LOG.error("Authentication failed", ex);
-            response.sendError(HttpStatus.UNAUTHORIZED.value(),
-                    gson.toJson(new UserAuthenticatedData(null,null)) );
+            ex.printStackTrace();
+            response.sendError(HttpStatus.UNAUTHORIZED.value(), gson.toJson(new UserAuthenticatedData(null, null)));
             return;
         } catch (IOException ex) {
             LOG.error("Failed to decode basic authentication token", ex);

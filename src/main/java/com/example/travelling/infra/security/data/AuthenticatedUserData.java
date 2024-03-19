@@ -1,11 +1,12 @@
 package com.example.travelling.infra.security.data;
 
-import com.example.travelling.infra.core.domain.appuser.domain.Permission;
+import com.example.travelling.infra.core.domain.permission.Permission;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 @Getter
@@ -25,7 +26,19 @@ public class AuthenticatedUserData {
         this.permissions = permissions;
     }
 
-    public boolean validatePermission(String locationResourceName) {
-        return permissions.contains(new Permission(locationResourceName));
+    public boolean hasPermission(String locationResourceName) {
+        AtomicBoolean flag = new AtomicBoolean(false);
+        Permission o = new Permission(locationResourceName);
+        for (Permission permission : permissions) {
+            if (permission.getResourceName().equals(o.getResourceName())) {
+                flag.set(true);
+                break;
+            }
+        }
+        if(flag.get() == false){
+            throw new RuntimeException("You do not have permission to access this resource");
+        }
+        return flag.get();
     }
 }
+

@@ -1,8 +1,7 @@
-package com.example.travelling.infra.core.domain.appuser.domain;
+package com.example.travelling.infra.core.domain.permission;
 
-import com.example.travelling.infra.core.domain.AbstractPersistableCustom;
+import com.example.travelling.infra.core.jpa.AbstractPersistableCustom;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,5 +16,9 @@ public class Permission extends AbstractPersistableCustom {
 
     public Permission(String locationResourceName) {
         this.resourceName = locationResourceName;
+    }
+
+    public Permission() {
+
     }
 }
