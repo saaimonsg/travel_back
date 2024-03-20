@@ -1,46 +1,11 @@
-INSERT INTO auth_permission (id, resource_name)
-VALUES (1, 'READ_CITY_PERMISSIONS'),
-       (2, 'WRITE_CITY_PERMISSIONS'),
-       (3, 'DELETE_CITY_PERMISSIONS'),
-       (4, 'UPDATE_CITY_PERMISSIONS'),
-       (5, 'READ_USER_PERMISSIONS'),
-       (6, 'WRITE_USER_PERMISSIONS'),
-       (7, 'DELETE_USER_PERMISSIONS'),
-       (8, 'UPDATE_USER_PERMISSIONS'),
-       (9, 'READ_ROLE_PERMISSIONS'),
-       (10, 'WRITE_ROLE_PERMISSIONS'),
-       (11, 'DELETE_ROLE_PERMISSIONS'),
-       (12, 'UPDATE_ROLE_PERMISSIONS'),
-       (13, 'READ_COUNTRY_PERMISSION'),
-       (14, 'CREATE_COUNTRY_PERMISSION'),
-       (15, 'DELETE_COUNTRY_PERMISSION'),
-       (16, 'UPDATE_COUNTRY_PERMISSION'),
-       (17, 'READ_PROVINCE_PERMISSION'),
-       (18, 'CREATE_PROVINCE_PERMISSION'),
-       (19, 'DELETE_PROVINCE_PERMISSION'),
-       (20, 'UPDATE_PROVINCE_PERMISSION'),
-       (21, 'READ_TRIP_PERMISSION'),
-       (22, 'CREATE_TRIP_PERMISSION'),
-       (23, 'DELETE_TRIP_PERMISSION'),
-       (24, 'UPDATE_TRIP_PERMISSION'),
-       (25, 'READ_TRIP_PASSENGER_PERMISSION'),
-       (26, 'CREATE_TRIP_PASSENGER_PERMISSION'),
-       (27, 'DELETE_TRIP_PASSENGER_PERMISSION'),
-       (28, 'UPDATE_TRIP_PASSENGER_PERMISSION'),
-       (29, 'READ_CURRENT_USER_PERMISSION'),
-       (30, 'UPDATE_CURRENT_USER_PERMISSION'),
-       (31, 'DELETE_CURRENT_USER_PERMISSION'),
-       (32, 'READ_USER_PROFILE_PERMISSION');
-
 INSERT INTO auth_role (id, description, is_disabled, name)
-VALUES (1, 'Current user', false, 'ROLE_USER'),
-       (2, 'Current user', false, 'ROLE_DRIVER'),
-       (3, 'Administration', false, 'ROLE_ADMIN');
+VALUES (2, 'Current user', false, 'ROLE_USER'),
+       (1, 'Administration', false, 'ROLE_ADMIN');
 
 INSERT
-INTO app_user (email, name, password, surname, username, is_driver,likes)
+INTO app_user (email, name, password, surname, username, is_driver, likes)
 VALUES ('string@string.com', 'string', '$2a$10$rQHngaa1FrHUHI/o/4rao.rkKqjuzeAKhwta.Qhyl5h6ce3WQsWxO',
-        'string', 'string', false,0);
+        'string', 'string', false, 0);
 
 INSERT INTO app_country (`id`, `iso`, `name`, `nice_name`, `iso3`, `num_code`, `phone_code`)
 VALUES (1, 'AF', 'AFGHANISTAN', 'Afghanistan', 'AFG', 4, 93),
@@ -2721,16 +2686,71 @@ VALUES (1, '2024-03-14 00:50:38.000000', '12:00', 'asdasda', 1, 487, 10, 4, 335,
 
 INSERT INTO join_app_user_auth_role (appuser_id, role_id)
 VALUES (1, 1);
+INSERT INTO auth_permission (id, resource_name)
+VALUES (1, 'READ_CITY_PERMISSION'),
+       (2, 'WRITE_CITY_PERMISSION'),
+       (3, 'DELETE_CITY_PERMISSION'),
+       (4, 'UPDATE_CITY_PERMISSION'),
+       (5, 'READ_USER_PERMISSION'),
+       (6, 'WRITE_USER_PERMISSION'),
+       (7, 'DELETE_USER_PERMISSION'),
+       (8, 'UPDATE_USER_PERMISSION'),
+       (9, 'READ_ROLE_PERMISSION'),
+       (10, 'WRITE_ROLE_PERMISSION'),
+       (11, 'DELETE_ROLE_PERMISSION'),
+       (12, 'UPDATE_ROLE_PERMISSION'),
+       (13, 'READ_COUNTRY_PERMISSION'),
+       (14, 'CREATE_COUNTRY_PERMISSION'),
+       (15, 'DELETE_COUNTRY_PERMISSION'),
+       (16, 'UPDATE_COUNTRY_PERMISSION'),
+       (17, 'READ_PROVINCE_PERMISSION'),
+       (18, 'CREATE_PROVINCE_PERMISSION'),
+       (19, 'DELETE_PROVINCE_PERMISSION'),
+       (20, 'UPDATE_PROVINCE_PERMISSION'),
+       (21, 'READ_TRIP_PERMISSION'),
+       (22, 'CREATE_TRIP_PERMISSION'),
+       (23, 'DELETE_TRIP_PERMISSION'),
+       (24, 'UPDATE_TRIP_PERMISSION'),
+       (25, 'READ_TRIP_PASSENGER_PERMISSION'),
+       (26, 'CREATE_TRIP_PASSENGER_PERMISSION'),
+       (27, 'DELETE_TRIP_PASSENGER_PERMISSION'),
+       (28, 'UPDATE_TRIP_PASSENGER_PERMISSION'),
+       (29, 'READ_PERMISSIONS_PERMISSION'),
+       (30, 'CREATE_PERMISSIONS_PERMISSION'),
+       (31, 'DELETE_PERMISSIONS_PERMISSION'),
+       (32, 'UPDATE_PERMISSIONS_PERMISSION');
+
 
 INSERT INTO join_auth_role_auth_permission (role_id, permission_id)
 VALUES (1, 1),
+       (1, 2),
+       (1, 3),
+       (1, 4),
+       (1, 5),
+       (1, 6),
+       (1, 7),
+       (1, 8),
+       (1, 9),
+       (1, 10),
+       (1, 11),
+       (1, 12),
        (1, 13),
+       (1, 14),
+       (1, 15),
+       (1, 16),
        (1, 17),
+       (1, 18),
+       (1, 19),
+       (1, 20),
        (1, 21),
+       (1, 22),
+       (1, 23),
+       (1, 24),
        (1, 25),
+       (1, 26),
+       (1, 27),
+       (1, 28),
        (1, 29),
        (1, 30),
        (1, 31),
        (1, 32);
-
-

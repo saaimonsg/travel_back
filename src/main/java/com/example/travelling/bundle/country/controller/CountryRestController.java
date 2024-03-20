@@ -56,7 +56,7 @@ public class CountryRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String delete(@RequestParam Long countryId) throws UnauthenticatedUserException {
-        this.platformSecurityContext.authenticatedUser();
+        this.platformSecurityContext.authenticatedUser().hasPermission(CountryConstants.COUNTRY_DELETE);
 
         return gson.toJson(countryService.delete(countryId));
     }

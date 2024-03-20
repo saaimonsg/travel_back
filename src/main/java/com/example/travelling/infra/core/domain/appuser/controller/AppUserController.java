@@ -58,10 +58,18 @@ public class AppUserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public AppUserData update(@RequestBody String body) throws UnauthenticatedUserException {
-        this.platformSecurityContext.authenticatedUser().hasPermission(AppUserConstants.UPDATE_CURRENT_USER_PERMISSION);
+        this.platformSecurityContext.authenticatedUser().hasPermission(AppUserConstants.UPDATE_USER_PERMISSION);
         AppUserData appUserData = gson.fromJson(body, AppUserData.class);
         appUserService.update(appUserData);
         return appUserData;
+    }
+    @RequestMapping(value = "/delete",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String  update(@RequestParam(value = "userId") Long userId) throws UnauthenticatedUserException {
+        this.platformSecurityContext.authenticatedUser().hasPermission(AppUserConstants.DELETE_USER_PERMISSION);
+        return ""; //TODO delete user by userId
     }
 
 
@@ -70,7 +78,7 @@ public class AppUserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getCurrentUser() throws UnauthenticatedUserException, AppUserExceptionError {
-        this.platformSecurityContext.authenticatedUser().hasPermission(AppUserConstants.READ_CURRENT_USER_PERMISSIONS);
+        this.platformSecurityContext.authenticatedUser().hasPermission(AppUserConstants.READ_CURRENT_USER_PERMISSION);
         AuthenticatedUserData authenticatedUserData = platformSecurityContext.authenticatedUser();
         authenticatedUserData.hasPermission(AppUserConstants.READ_USER_PERMISSION);
         return gson.toJson(appUserService.findByUsername(authenticatedUserData.getUsername()));
