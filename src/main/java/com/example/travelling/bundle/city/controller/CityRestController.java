@@ -27,14 +27,14 @@ public class CityRestController {
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findByProvinceId(@RequestParam(name = "provinceId", required = false) Long provinceId) throws UnauthenticatedUserException {
-        this.platformSecurityContext.authenticatedUser().hasPermission(CityConstants.CITY_READ);
+        this.platformSecurityContext.authenticatedUser().hasPermission(CityConstants.READ_CITY_PERMISSIONS);
         return gson.toJson(cityService.findAllByProvinceId(provinceId));
 
     }
     @RequestMapping(value = "/getAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findAll() throws UnauthenticatedUserException {
-        this.platformSecurityContext.authenticatedUser().hasPermission(CityConstants.CITY_READ);
+        this.platformSecurityContext.authenticatedUser().hasPermission(CityConstants.READ_CITY_PERMISSIONS);
         return gson.toJson(cityService.findAll());
 
     }
@@ -43,7 +43,7 @@ public class CityRestController {
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String createCity(@RequestBody String body) throws UnauthenticatedUserException {
-        this.platformSecurityContext.authenticatedUser().hasPermission(CityConstants.CITY_CREATE);
+        this.platformSecurityContext.authenticatedUser().hasPermission(CityConstants.WRITE_CITY_PERMISSIONS);
         City cityData = gson.fromJson(body, City.class);
         cityService.create(cityData);
         return gson.toJson("city.create.successful");
@@ -51,7 +51,7 @@ public class CityRestController {
 
     @RequestMapping(value = "/remove", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String removeCity(@RequestParam(name = "cityId") Long cityId) throws UnauthenticatedUserException {
-        this.platformSecurityContext.authenticatedUser().hasPermission(CityConstants.CITY_DELETE);
+        this.platformSecurityContext.authenticatedUser().hasPermission(CityConstants.DELETE_CITY_PERMISSIONS);
         cityService.remove(cityId);
         return gson.toJson("city.remove.successful");
     }

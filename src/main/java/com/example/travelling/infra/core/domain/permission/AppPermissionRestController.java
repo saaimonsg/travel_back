@@ -23,7 +23,6 @@ public class AppPermissionRestController {
 
     @Autowired
     public AppPermissionRestController(PlatformSecurityContext platformSecurityContext, PermissionService permissionService) {
-
         this.platformSecurityContext = platformSecurityContext;
         this.permissionService = permissionService;
     }
