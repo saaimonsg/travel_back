@@ -9,9 +9,12 @@ public interface CountryService {
 
     List<Country> findAll();
 
+    List<Country> search(String pattern);
     Country findById(Long toCountryId);
 
     Country save(Country country);
 
     Country delete(Long countryId);
+
+    Country update(Country country);
 }

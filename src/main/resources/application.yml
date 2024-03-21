@@ -35,7 +35,7 @@ spring:
     user: "${MYSQL_USERNAME:mysql}"
     password: "${MYSQL_PASSWORD:root}"
 
-logging:
-  level:
-    web: debug
-    root: debug
+#logging:
+#  level:
+#    web: debug
+#    root: debug
