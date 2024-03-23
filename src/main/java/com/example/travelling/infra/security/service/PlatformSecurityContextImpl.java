@@ -37,11 +37,11 @@ public class PlatformSecurityContextImpl implements PlatformSecurityContext {
             if (auth != null) {
                 currentUser = (CustomUserDetails) auth.getPrincipal();
             }else{
-                throw new UnauthenticatedUserException();
+                throw new UnauthenticatedUserException("unauthenticated");
             }
         }
         if (currentUser == null) {
-            throw new UnauthenticatedUserException();
+            throw new UnauthenticatedUserException("user.not.logged");
         }
         AppUser appUser = appUserJpaRepository.findByUsername(currentUser.getUsername());
         List<Permission> permissions = new ArrayList<>();

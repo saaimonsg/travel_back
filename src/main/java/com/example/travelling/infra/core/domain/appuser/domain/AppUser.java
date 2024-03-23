@@ -42,6 +42,9 @@ public class AppUser  {
     @Column(nullable = true)
     private boolean isDriver = false;
 
+    @Column(nullable = false)
+    private boolean isNew = true;
+
     @Builder.Default
     @Column(nullable = true)
     private Long likes = 0L;

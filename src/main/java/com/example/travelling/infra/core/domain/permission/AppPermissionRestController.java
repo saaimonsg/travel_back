@@ -43,4 +43,5 @@ public class AppPermissionRestController {
 
         return gson.toJson(permissionService.save(permission));
     }
+
 }

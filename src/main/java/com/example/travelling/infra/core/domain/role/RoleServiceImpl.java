@@ -41,4 +41,16 @@ public class RoleServiceImpl implements RoleService {
         roleJpaRepository.save(role);
         return roleData;
     }
+
+    @Override
+    public Role delete(Long roleId) {
+        Role role = findById(roleId);
+        roleJpaRepository.delete(role);
+        return role;
+    }
+
+    @Override
+    public Role findByName(String roleUser) {
+        return roleJpaRepository.findByName(roleUser);
+    }
 }

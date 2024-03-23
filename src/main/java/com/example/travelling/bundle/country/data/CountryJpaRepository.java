@@ -12,6 +12,6 @@ public interface CountryJpaRepository extends JpaRepository<Country, Long> {
     @Query(value = "select c from Country c order by c.name")
     List<Country> orderAllByName();
 
-    @Query(value= "select c from Country c where c.name like :pattern% ")
+    @Query(value= "select c from Country c where c.name like %:pattern% ")
     List<Country> searchByName(@Param("pattern") String pattern);
 }

@@ -1,5 +1,6 @@
 package com.example.travelling.bundle.trip.controller;
 
+import com.example.travelling.bundle.trip.data.TripApiConstants;
 import com.example.travelling.bundle.trip.service.TripService;
 import com.example.travelling.infra.core.domain.appuser.exception.AppUserExceptionError;
 import com.example.travelling.infra.security.exception.UnauthenticatedUserException;
@@ -26,7 +27,7 @@ public class TripRestController {
     @ResponseBody
     
     public String getAllTripsDatas() throws UnauthenticatedUserException, AppUserExceptionError {
-         this.platformSecurityContext.authenticatedUser();
+         this.platformSecurityContext.authenticatedUser().hasPermission(TripApiConstants.READ_TRIPS_PERMISSION);
 
         return gson.toJson(tripService.findAllTrips());
     }
@@ -39,7 +40,7 @@ public class TripRestController {
     @ResponseBody
     public String getTripData(@PathVariable(name = "tripId") Long tripId) throws UnauthenticatedUserException,
             AppUserExceptionError {
-        this.platformSecurityContext.authenticatedUser();
+        this.platformSecurityContext.authenticatedUser().hasPermission(TripApiConstants.READ_TRIPS_PERMISSION);
 
         return gson.toJson(tripService.findTripById(tripId));
     }

@@ -11,4 +11,8 @@ public interface RoleService {
     Role findById(Long roleId);
 
     RoleData edit(RoleData roleData);
+
+    Role delete(Long roleId);
+
+    Role findByName(String roleUser);
 }

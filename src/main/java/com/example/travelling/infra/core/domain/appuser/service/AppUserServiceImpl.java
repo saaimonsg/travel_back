@@ -4,6 +4,8 @@ import com.example.travelling.infra.core.domain.appuser.data.AppUserData;
 import com.example.travelling.infra.core.domain.appuser.domain.AppUser;
 import com.example.travelling.infra.core.domain.appuser.exception.AppUserExceptionError;
 import com.example.travelling.infra.core.domain.appuser.data.AppUserJpaRepository;
+import com.example.travelling.infra.core.domain.role.Role;
+import com.example.travelling.infra.core.domain.role.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,30 +18,40 @@ import java.util.Optional;
 public class AppUserServiceImpl implements AppUserService {
 
     private final AppUserJpaRepository appUserJpaRepository;
-
+    private final RoleService roleService;
 
     @Override
     public void registerUser(AppUserData appUser) throws AppUserExceptionError {
-        AppUser userByUsername = null;
+
         String username = appUser.getUsername().toLowerCase();
 
-        userByUsername = appUserJpaRepository.findByUsername(username);
-        Long id = userByUsername.getId();
-        String name = userByUsername.getName();
-        String surname = userByUsername.getSurname();
-        String email = userByUsername.getEmail();
-        if (name != null && surname != null && email != null) {
+        AppUser userByUsername = appUserJpaRepository.findByUsername(username);
+        String validateUsername = userByUsername.getUsername();
+        String validateEmail = userByUsername.getEmail();
+        if (validateUsername != null && validateEmail != null && !userByUsername.isNew()) {
             throw new AppUserExceptionError("user.exists");
-        } else {
-            userByUsername.setId(id);
-            userByUsername.setName(appUser.getName());
-            userByUsername.setSurname(appUser.getSurname());
-            userByUsername.setEmail(appUser.getEmail());
-            appUserJpaRepository.saveAndFlush(userByUsername);
         }
 
+//        List<Role> roleList = new ArrayList<>();
+//        roleList.add(roleService.findByName("ROLE_USER"));
 
-        //TODO send email
+
+        if (appUser.getEmail().isBlank() || appUser.getEmail().isEmpty() || appUser.getName().isBlank() ||
+                appUser.getName().isEmpty() || appUser.getSurname().isBlank() || appUser.getSurname().isEmpty()) {
+            throw new AppUserExceptionError("user.not.valid");
+        }
+        AppUser temp = appUserJpaRepository.findByUsername(appUser.getUsername().toLowerCase());
+
+        temp.setNew(false);
+        temp.setName(appUser.getName());
+        temp.setSurname(appUser.getSurname());
+        temp.setEmail(appUser.getEmail().toLowerCase());
+
+
+        appUserJpaRepository.saveAndFlush(temp);
+
+
+        //TODO send validateEmail
 
     }
 

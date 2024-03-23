@@ -2,7 +2,6 @@ package com.example.travelling.infra.security.controller;
 
 import com.example.travelling.infra.core.domain.appuser.data.AppUserData;
 import com.example.travelling.infra.core.domain.appuser.data.AppUserJpaRepository;
-import com.example.travelling.infra.core.domain.appuser.domain.AppUser;
 import com.example.travelling.infra.core.domain.appuser.exception.AppUserExceptionError;
 import com.example.travelling.infra.core.domain.appuser.service.AppUserService;
 import com.example.travelling.infra.security.data.UserAuthenticatedData;
@@ -16,16 +15,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/authenticate")

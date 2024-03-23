@@ -104,18 +104,20 @@ public class CustomFilter extends BasicAuthenticationFilter {
                     Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
                     grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
                     authRequest = new UsernamePasswordAuthenticationToken(username, password, grantedAuthorities);
+                }else{
+                    Authentication authResult = super.getAuthenticationManager().authenticate(authRequest);
+                    SecurityContextHolder.getContext().setAuthentication(authResult);
                 }
-                log.debug("authRequest: {}", authRequest);
-                log.debug("authRequest -> getPrincipal: {}", authRequest.getPrincipal());
-                log.debug("authRequest -> getDetails: {}", authRequest.getDetails());
-                log.debug("authRequest -> getAuthorities: {}", authRequest.getAuthorities());
-                log.debug("authRequest -> isAuthenticated: {}", authRequest.isAuthenticated());
-                log.debug("request-> getPathInfo: {}", request.getPathInfo());
-                log.debug("request-> getRequestURI: {}", request.getRequestURI());
-                log.debug("request-> getRequestURL: {}", request.getRequestURL());
-                log.debug("request-> getServletPath: {}", request.getServletPath());
-                Authentication authResult = super.getAuthenticationManager().authenticate(authRequest);
-                SecurityContextHolder.getContext().setAuthentication(authResult);
+                log.info("authRequest:: \t{}", authRequest);
+                log.info("authRequest::getPrincipal:\t {}", authRequest.getPrincipal());
+                log.info("authRequest::getDetails:\t {}", authRequest.getDetails());
+                log.info("authRequest::getAuthorities:\t {}", authRequest.getAuthorities());
+                log.info("authRequest::isAuthenticated:\t {}", authRequest.isAuthenticated());
+                log.info("authRequest:: getName:\t {}", authRequest.getName());
+                log.info("request-> getPathInfo:\t {}", request.getPathInfo());
+                log.info("request-> getRequestURI:\t {}", request.getRequestURI());
+                log.info("request-> getRequestURL:\t {}", request.getRequestURL());
+                log.info("request-> getServletPath:\t {}", request.getServletPath());
             }
 
         } catch (AuthenticationException ex) {

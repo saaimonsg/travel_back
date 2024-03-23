@@ -18,8 +18,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Autowired
     private CountryJpaRepository repository;
-    @PersistenceContext
-    private EntityManager entityManager;
+
 
     @Override
     public List<Country> findAll() {
@@ -28,17 +27,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public List<Country> search(String pattern) {
-//        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-//        CriteriaQuery<Country> query = cb.createQuery(Country.class);
-//        Root<Country>  country = query.from(Country.class);
-//
-//        Path<String> countryName = country.get("name");
-//        List<Predicate> predicates = new ArrayList<>();
-//        predicates.add(cb.like(countryName,pattern));
-//        query.select(country).
-//                where(cb.or(predicates.toArray(new Predicate[predicates.size()])));
-//        log.info(query.toString());
-//        return entityManager.createQuery(query).getResultList();
+
         return repository.searchByName(pattern.toUpperCase());
     }
 

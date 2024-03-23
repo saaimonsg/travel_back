@@ -1,7 +1,3 @@
-INSERT INTO auth_role (id, description, is_disabled, name)
-VALUES (2, 'Current user', false, 'ROLE_USER'),
-       (1, 'Administration', false, 'ROLE_ADMIN');
-
 INSERT
 INTO app_user (email, name, password, surname, username, is_driver, likes)
 VALUES ('string@string.com', 'string', '$2a$10$rQHngaa1FrHUHI/o/4rao.rkKqjuzeAKhwta.Qhyl5h6ce3WQsWxO',
@@ -2683,42 +2679,49 @@ VALUES (1, '2024-03-14 00:50:38.000000', '12:00', 'asdasda', 1, 487, 10, 4, 335,
        (6, '2024-03-19 00:50:38.000000', '12:00', 'asdasda', 1, 487, 10, 4, 335, 10, 3, 3, false),
        (7, '2024-03-20 00:50:38.000000', '12:00', 'asdasda', 1, 487, 10, 4, 335, 10, 3, 3, false);
 
+INSERT INTO auth_role (id, description, is_disabled, name)
+VALUES (1, 'Administration', false, 'ROLE_ADMIN'),
+       (2, 'Current user', false, 'ROLE_USER');
 
 INSERT INTO join_app_user_auth_role (appuser_id, role_id)
 VALUES (1, 1);
+
 INSERT INTO auth_permission (id, resource_name)
-VALUES (1, 'READ_CITY_PERMISSION'),
-       (2, 'WRITE_CITY_PERMISSION'),
-       (3, 'DELETE_CITY_PERMISSION'),
-       (4, 'UPDATE_CITY_PERMISSION'),
-       (5, 'READ_USER_PERMISSION'),
-       (6, 'WRITE_USER_PERMISSION'),
-       (7, 'DELETE_USER_PERMISSION'),
-       (8, 'UPDATE_USER_PERMISSION'),
-       (9, 'READ_ROLE_PERMISSION'),
-       (10, 'WRITE_ROLE_PERMISSION'),
-       (11, 'DELETE_ROLE_PERMISSION'),
-       (12, 'UPDATE_ROLE_PERMISSION'),
-       (13, 'READ_COUNTRY_PERMISSION'),
-       (14, 'WRITE_COUNTRY_PERMISSION'),
-       (15, 'DELETE_COUNTRY_PERMISSION'),
-       (16, 'UPDATE_COUNTRY_PERMISSION'),
-       (17, 'READ_PROVINCE_PERMISSION'),
-       (18, 'WRITE_PROVINCE_PERMISSION'),
-       (19, 'DELETE_PROVINCE_PERMISSION'),
-       (20, 'UPDATE_PROVINCE_PERMISSION'),
-       (21, 'READ_TRIP_PERMISSION'),
-       (22, 'WRITE_TRIP_PERMISSION'),
-       (23, 'DELETE_TRIP_PERMISSION'),
-       (24, 'UPDATE_TRIP_PERMISSION'),
-       (25, 'READ_TRIP_PASSENGER_PERMISSION'),
-       (26, 'WRITE_TRIP_PASSENGER_PERMISSION'),
-       (27, 'DELETE_TRIP_PASSENGER_PERMISSION'),
-       (28, 'UPDATE_TRIP_PASSENGER_PERMISSION'),
-       (29, 'READ_PERMISSIONS_PERMISSION'),
-       (30, 'WRITE_PERMISSIONS_PERMISSION'),
-       (31, 'DELETE_PERMISSIONS_PERMISSION'),
-       (32, 'UPDATE_PERMISSIONS_PERMISSION');
+VALUES (1, 'READ_COUNTRY_PERMISSION'),
+       (2, 'WRITE_COUNTRY_PERMISSION'),
+       (3, 'DELETE_COUNTRY_PERMISSION'),
+       (4, 'UPDATE_COUNTRY_PERMISSION'),
+
+       (5, 'READ_PROVINCE_PERMISSION'),
+       (6, 'WRITE_PROVINCE_PERMISSION'),
+       (7, 'DELETE_PROVINCE_PERMISSION'),
+       (8, 'UPDATE_PROVINCE_PERMISSION'),
+
+       (9, 'READ_CITY_PERMISSION'),
+       (10, 'WRITE_CITY_PERMISSION'),
+       (11, 'DELETE_CITY_PERMISSION'),
+       (12, 'UPDATE_CITY_PERMISSION'),
+
+       (13, 'READ_USER_PERMISSION'),
+       (14, 'WRITE_USER_PERMISSION'),
+       (15, 'DELETE_USER_PERMISSION'),
+       (16, 'UPDATE_USER_PERMISSION'),
+
+       (17, 'READ_ROLE_PERMISSION'),
+       (18, 'WRITE_ROLE_PERMISSION'),
+       (19, 'DELETE_ROLE_PERMISSION'),
+       (20, 'UPDATE_ROLE_PERMISSION'),
+
+
+       (21, 'READ_PERMISSIONS_PERMISSION'),
+       (22, 'WRITE_PERMISSIONS_PERMISSION'),
+       (23, 'DELETE_PERMISSIONS_PERMISSION'),
+       (24, 'UPDATE_PERMISSIONS_PERMISSION'),
+
+       (25, 'READ_TRIPS_PERMISSION'),
+       (26, 'WRITE_TRIPS_PERMISSION'),
+       (27, 'DELETE_TRIPS_PERMISSION'),
+       (28, 'UPDATE_TRIPS_PERMISSION');
 
 
 INSERT INTO join_auth_role_auth_permission (role_id, permission_id)
@@ -2749,8 +2752,10 @@ VALUES (1, 1),
        (1, 25),
        (1, 26),
        (1, 27),
-       (1, 28),
-       (1, 29),
-       (1, 30),
-       (1, 31),
-       (1, 32);
+       (1,28);
+INSERT INTO join_auth_role_auth_permission (role_id, permission_id)
+VALUES (2, 1),
+       (2, 5),
+       (2, 9),
+       (2, 25);
+

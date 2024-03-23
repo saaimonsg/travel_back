@@ -61,6 +61,7 @@ CREATE TABLE `app_user`
     `id`          bigint       NOT NULL AUTO_INCREMENT,
     `email`       varchar(255) DEFAULT NULL,
     `is_driver`   bit(1)       DEFAULT NULL,
+    `is_new`      bit(1),
     `name`        varchar(255) DEFAULT NULL,
     `password`    varchar(255) NOT NULL,
     `surname`     varchar(255) DEFAULT NULL,
